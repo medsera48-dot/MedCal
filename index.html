@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clarifai API Key Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      padding: 20px;
+      text-align: center;
+    }
+    button {
+      padding: 12px 20px;
+      font-size: 16px;
+      border: none;
+      background: #007bff;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    pre {
+      text-align: left;
+      margin-top: 20px;
+      padding: 15px;
+      background: #222;
+      color: #0f0;
+      border-radius: 8px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔍 Clarifai API Key Test</h1>
+  <p>Click below to test your API key with a food image.</p>
+  <button onclick="testClarifai()">Test API</button>
+  <pre id="output">Result will appear here...</pre>
+
+  <script>
+    async function testClarifai() {
+      const output = document.getElementById("output");
+      output.textContent = "⏳ Testing Clarifai API...";
+
+      try {
+        const res = await fetch("https://api.clarifai.com/v2/models/bd367be194cf45149e75f01d59f77ba7/outputs", {
+          method: "POST",
+          headers: {
+            "Authorization": "Key b7a76647f059733de3560738a498f97e", // your API key
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            inputs: [
+              { data: { image: { url: "https://samples.clarifai.com/food.jpg" } } }
+            ]
+          })
+        });
+
+        const data = await res.json();
+        output.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        output.textContent = "❌ Error: " + err;
+      }
+    }
+  </script>
+</body>
+</html>
